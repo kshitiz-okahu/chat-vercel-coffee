@@ -7,7 +7,7 @@ const s3Client = new S3Client({ region: 'us-east-1' , credentials:{
     secretAccessKey: process.env.MONOCLE_AWS_ACCESS_KEY_ID || ''
 }});
 
-const tracesBucketName = process.env.S3_BUCKET_NAME || '';
+const tracesBucketName = process.env.MONOCLE_S3_BUCKET_NAME || '';
 
 export async function GET(request: Request) {
     const sessionId = request.headers.get('X-Session-Id');

@@ -21,7 +21,7 @@ export async function GET(request: Request) {
 
     try {
         const command = new GetObjectCommand({
-            Bucket: process.env.S3_BUCKET_NAME || '',
+            Bucket: process.env.MONOCLE_S3_BUCKET_NAME || '',
             Key: key
         });
 
