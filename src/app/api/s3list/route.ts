@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server';
 import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 
 const s3Client = new S3Client({ region: 'us-east-1' , credentials:{
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID_S3 || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_S3 || ''
+    accessKeyId: process.env.MONOCLE_AWS_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.MONOCLE_AWS_ACCESS_KEY_ID || ''
 }});
 
 const tracesBucketName = process.env.S3_BUCKET_NAME || '';
