@@ -83,7 +83,7 @@ Used to read S3 bucket from app
 MONOCLE_AWS_ACCESS_KEY_ID= 
 MONOCLE_AWS_ACCESS_KEY_ID= 
 MONOCLE_S3_BUCKET_NAME= 
-S3_KEY_PREFIX=monocle_trace_ 
+MONOCLE_S3_KEY_PREFIX=monocle_trace_ 
 ```
 Config for Monocle instrumentation to write traces to S3
 ```

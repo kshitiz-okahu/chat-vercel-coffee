@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
     try {
         const bucketName = tracesBucketName;
-        let s3prefix = process.env.S3_KEY_PREFIX || 'monocle_trace_';
+        let s3prefix = process.env.MONOCLE_S3_KEY_PREFIX || 'monocle_trace_';
         let prefix = `${s3prefix}${sessionId}`;
         const listParams = {
             Bucket: bucketName,
