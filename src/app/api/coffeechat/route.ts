@@ -1,7 +1,7 @@
 import { logger } from '@/libs/Logger';
 import { NextResponse } from 'next/server';
 import { aiSdkInvoke } from './ai-sdk';
-import { setScopes } from "monocle2ai";
+// import { setScopes } from "monocle2ai";
 import type { ModelProvider } from '@/utils/ModelProviders';
 
 export const POST = async (request: Request) => {
@@ -19,15 +19,7 @@ export const POST = async (request: Request) => {
     
     console.log(`Processing message with provider: ${provider}`);
     
-    const aiResponse = await setScopes(
-      {
-        "sessionId": sessionId,
-        "provider": provider
-      },
-      () => {
-        return aiSdkInvoke(userMessage, provider);
-      }
-    );
+    const aiResponse = await aiSdkInvoke(userMessage, provider);
 
     // Format the response to match the expected structure
     const responseMessage = {
