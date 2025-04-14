@@ -9,6 +9,6 @@ export default
       },
       poweredByHeader: false,
       reactStrictMode: true,
-      serverExternalPackages : ['ai', 'import-in-the-middle'],
+      serverExternalPackages : ['ai'],
     }
 
