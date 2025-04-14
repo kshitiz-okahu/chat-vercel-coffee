@@ -22,7 +22,7 @@ export function ChatBubble({ role, content, isLoading, provider }: {
                             alt={`${provider} Logo`}
                             width={20}
                             height={20}
-                            className="invert"
+                            // className="invert"
                         />
                     )}
                 </div>
