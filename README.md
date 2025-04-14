@@ -4,7 +4,7 @@ This repository contains source code for an [AI assistant](#about-this-ai-assist
 
 <img src="assets/img/coffee-ai-assistant.png" width="320"> <img src="assets/img/monocle-trace.png" width="320">
 
-[Ask a question](https://chatbot-coffee-vercel.vercel.app/) about coffee and this AI assistant will answer based on [knowledgebase](data/coffeeText.js) about coffee using an LLM. You can then explore telemetry to view the traces captured by Monocle resulting from this interaction. This repository contains code for the GenAI app you can deploy to learn how Monocle instrumentation works. 
+[Ask a question](https://chatbot-coffee-vercel.vercel.app/) about coffee and this AI assistant will answer about coffee using an LLM. You can then explore telemetry to view the traces captured by Monocle resulting from this interaction. This repository contains code for the GenAI app you can deploy to learn how Monocle instrumentation works. 
 
 ### About Monocle 
 
@@ -18,7 +18,7 @@ Monocle is currently a [Sandbox](https://lfaidata.foundation/projects/monocle/) 
 
 <img src="assets/img/ai-assistant-vercel.png" width="430">
 
-This AI assistant is a simple chatbot with the front-end built with Next.js and the GenAI code built with Langchain framework that relies on an OpenAI GPT model. The app is hosted in Vercel with the GenAI code running in an API with NextJS route.
+This AI assistant is a simple chatbot with the front-end built with Next.js and the GenAI code built with Vercel AI SDK that relies on an OpenAI GPT model. The app is hosted in Vercel with the GenAI code running in an API with NextJS route.
 
 The GenAI app code is instrumented with Monocle using one line of code to trace the entire conversation including inferences to OpenAI and vector searchs. Monocle is configured to send traces to S3 so you can explore the raw trace data, which is in an OpenTelemetry compatible format with a GenAI-native metamodel abstraction added to it to simplify analysis. 
 
@@ -42,17 +42,15 @@ This demo is managed by the following LF contributors to Monocle: *Okahu*.[^1]
   - Clicking send invokes GenAI code in [api/coffeechat](src/app/api/coffeechat/route.ts).
   - User switch to AWS S3 [trace browser](src/app/s3/page.tsx) to view Monocle traces. 
 
-- GenAI code in Typescript with Langchain framework
-  - Uses **a single RAG chain** specified in [coffeechat/langchain.ts](src/app/api/coffeechat/langchain.ts).
-  - [Prompt template](src/app/api/coffeechat/utils.ts) includes user message as `{question}` and [data](data/coffeeText.js) about coffee as `{context}`. 
-  - OpenAI `OpenAIEmbeddings` model is used to create embeddings stored in an in-memory vector store.
-  - OpenAI `ChatOpenAI` model is used to respond to user. 
+- GenAI code in Typescript with Vercel AI SDK
+  - Uses **a single LLM query** specified in [coffeechat/ai-sdk.ts](src/app/api/coffeechat/ai-sdk.ts).
+  - Various models from Vercel AI SDK specified in [ModelProviders.ts](src/utils/ModelProviders.ts)  is used to respond to user. 
 
 ### To add Monocle instrumentation
 
 - Add monocle2ai to [instrumentation.ts](src/instrumentation.ts) per NextJS [convention](https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation)
   - `const { setupMonocle } = require("monocle2ai")` specifies use of the Monocle npm package
-  - `setupMonocle("openai.app")` specifies tracing and metadata to add to traces
+  - `setupMonocle("vercelai.app")` specifies tracing and metadata to add to traces
 
 - Add package dependency and environment variables to configure where to send traces
   - Include `"monocle2ai": "^0.0.1-beta.2"` in [package.json](package.json)
@@ -64,9 +62,8 @@ This demo is managed by the following LF contributors to Monocle: *Okahu*.[^1]
 ### Deploy this app as a project to Vercel 
 
 - Prerequisites
-   - OpenAI account with a valid [API key](https://platform.openai.com/settings/organization/api-keys) - used for model inference 
+   - OpenAI or any other provider account with a valid [API key](https://platform.openai.com/settings/organization/api-keys) - used for model inference 
    - AWS [S3 bucket](https://us-east-1.console.aws.amazon.com/s3/get-started?region=us-east-1) with read and write privileges - used to store and serve up telemetry data
-      - Make sure to include "https://*.vercel.app" in "AllowedOrigins" of [CORS configuration](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enabling-cors-examples.html?icmpid=docs_amazons3_console)
    - Vercel [account](https://vercel.com/login) - used to host the app 
 
 To deploy this app to Vercel 
@@ -94,33 +91,6 @@ MONOCLE_AWS_SECRET_ACCESS_KEY=
 MONOCLE_AWS_ACCESS_KEY_ID=
 ```
 4. Deploy the project 
-
-
-### Add your own data (optional)
-
-To customize this AI assistant 
-1. Add your coffee preparations to this [knowledgebase](data/coffeeText.js). 
-2. Recreate embeddings per instructions below.
-3. Redploy your app to pick up the new embeddings. 
-
-#### Generate embeddings 
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Set your OpenAI API key:
-```bash
-export OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
-```
-
-3. Run the embedding creator script:
-```bash
-node data/coffeeEmbeddingCreator.js
-```
-
-This script will read `data/coffeeText.js` to generate `coffeeEmbedding.json`, which is then used as `coffeeData` in [coffeechat/utils.ts](src/app/api/coffeechat/utils.ts) to create the `{context}` in the [system prompt](src/app/api/coffeechat/utils.ts). 
 
 
 [^1]: Use of Okahu hosted demo is covered by Okahu's [terms of service for evaluations](https://www.okahu.ai/agreements/evaluation-agreement). 
