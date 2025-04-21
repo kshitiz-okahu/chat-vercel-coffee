@@ -1,6 +1,8 @@
 import { setupMonocle } from 'monocle2ai';
 import * as module_private_1 from 'module'
 import * as fs from 'fs';
+// @ts-ignore
+import *  as _ from 'import-in-the-middle/hook.mjs';
 
 export async function register() {
     // console.log("hook: " + Hook);
@@ -9,7 +11,7 @@ export async function register() {
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
         // read a directory and list all the folders
-        for(const dir of ["/var/task/node_modules", "/var/task/", "/var/task/node_modules/import-in-the-middle"]) {
+        for(const dir of ["/var/task/node_modules", "/var/task/", "/var/task/node_modules/import-in-the-middle/lib"]) {
             // const dir = '/var/task/node_modules';
             console.log(`Reading directory: ${dir}`);
             const files = fs.readdirSync(dir);
