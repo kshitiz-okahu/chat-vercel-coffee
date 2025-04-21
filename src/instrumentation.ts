@@ -1,5 +1,5 @@
 import { setupMonocle } from 'monocle2ai';
-// import * as module_private_1 from 'module'
+import * as module_private_1 from 'module'
 import * as fs from 'fs';
 
 export async function register() {
@@ -8,7 +8,7 @@ export async function register() {
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
         // @ts-ignore
-        // await import('import-in-the-middle/hook.mjs')
+        import('import-in-the-middle/hook.mjs')
 
         // read a directory and list all the folders
         for(const dir of ["/var/task/node_modules", "/var/task/", "/var/task/node_modules/import-in-the-middle"]) {
@@ -26,7 +26,7 @@ export async function register() {
             });
         }
         
-        // module_private_1.register('import-in-the-middle/hook.mjs',"file:///var/task/node_modules")
+        module_private_1.register('import-in-the-middle/hook.mjs',"file:///var/task/node_modules")
         console.log("registered import-in-the-middle/hook.mjs");
         try {   
             setupMonocle("vercelai.app");
