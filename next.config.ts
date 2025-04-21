@@ -9,6 +9,6 @@ export default
       },
       poweredByHeader: false,
       reactStrictMode: true,
-      serverExternalPackages : ['ai']
+      serverExternalPackages : ['ai', 'monocle2ai']
     }
 
