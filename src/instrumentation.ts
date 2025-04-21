@@ -9,7 +9,7 @@ export async function register() {
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
         // read a directory and list all the folders
-        const dir = '/vercel/path0/node_modules';
+        const dir = '/vercel/path0';
         const files = fs.readdirSync(dir);
         files.forEach(file => {
             const filePath = `${dir}/${file}`;
