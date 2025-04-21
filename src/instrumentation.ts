@@ -1,16 +1,15 @@
 import { setupMonocle } from 'monocle2ai';
 import * as module_private_1 from 'module'
 import * as fs from 'fs';
-// @ts-ignore
-import {initialize} from 'import-in-the-middle/hook.mjs';
 
 export async function register() {
     // console.log("hook: " + Hook);
     console.log("Registering instrumentation... NEXT_RUNTIME: " + process.env.NEXT_RUNTIME);
-    console.log("import.meta.url: " + import.meta.url);
-    console.log("import-in-the-middle/hook.mjs: " + initialize);
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
+        // @ts-ignore
+        await import('import-in-the-middle/hook.mjs')
+
         // read a directory and list all the folders
         for(const dir of ["/var/task/node_modules", "/var/task/", "/var/task/node_modules/import-in-the-middle"]) {
             // const dir = '/var/task/node_modules';
@@ -29,6 +28,10 @@ export async function register() {
         
         module_private_1.register('import-in-the-middle/hook.mjs',"file:///var/task/node_modules")
         console.log("registered import-in-the-middle/hook.mjs");
-        setupMonocle("vercelai.app");
+        try {   
+            setupMonocle("vercelai.app");
+        } catch (error) {
+            console.error("Error setting up Monocle:", error);
+        }
     }
 }
