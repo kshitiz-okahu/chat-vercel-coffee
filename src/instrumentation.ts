@@ -11,6 +11,7 @@ export async function register() {
         // read a directory and list all the folders
         for(const dir of ["/var/task/node_modules", "/var/task/", "/var/task/node_modules/import-in-the-middle"]) {
             // const dir = '/var/task/node_modules';
+            console.log(`Reading directory: ${dir}`);
             const files = fs.readdirSync(dir);
             files.forEach(file => {
                 const filePath = `${dir}/${file}`;
