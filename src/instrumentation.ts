@@ -1,7 +1,6 @@
 import { setupMonocle } from 'monocle2ai';
 import * as module_private_1 from 'module'
 import * as fs from 'fs';
-import * as path from 'path';
 
 export async function register() {
     // console.log("hook: " + Hook);
@@ -9,44 +8,19 @@ export async function register() {
     console.log("import.meta.url: " + import.meta.url);
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
-        function findFile(dir: string, filename: string): string | null {
-            try {
-                const items = fs.readdirSync(dir, { withFileTypes: true });
-
-                for (const item of items) {
-                    const fullPath = path.join(dir, item.name);
-
-                    if (item.isFile() && item.name === filename) {
-                        return fullPath;
-                    }
-
-                    if (item.isDirectory()) {
-                        const found = findFile(fullPath, filename);
-                        if (found) {
-                            return found;
-                        }
-                    }
-                }
-
-                return null;
+        // read a directory and list all the folders
+        const dir = '/var/task';
+        const files = fs.readdirSync(dir);
+        files.forEach(file => {
+            const filePath = `${dir}/${file}`;
+            const stat = fs.statSync(filePath);
+            if (stat.isDirectory()) {
+                console.log(`Directory: ${file}`);
+            } else {
+                console.log(`File: ${file}`);
             }
-            catch (error) {
-                console.error("Error reading directory: ", error);
-                return null;
-            }
-
-        }
-
-        // Example usage
-        const directoryToSearch = '/'; // Change this to your base path
-        const fileToFind = 'monocle-black.svg'; // Change this to the filename you're looking for
-
-        const result = findFile(directoryToSearch, fileToFind);
-
-        console.log("File found at: " + result);
-
-
-        module_private_1.register('import-in-the-middle/hook.mjs', "file:///vercel/path0/node_modules")
+        });
+        module_private_1.register('import-in-the-middle/hook.mjs',"file:///vercel/path0/node_modules")
         console.log("registered import-in-the-middle/hook.mjs");
         setupMonocle("vercelai.app");
     }
