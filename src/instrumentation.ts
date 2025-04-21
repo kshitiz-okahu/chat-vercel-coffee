@@ -29,6 +29,6 @@ export async function register() {
         
         module_private_1.register('import-in-the-middle/hook.mjs',"file:///var/task/node_modules")
         console.log("registered import-in-the-middle/hook.mjs");
-        // setupMonocle("vercelai.app");
+        setupMonocle("vercelai.app");
     }
 }
