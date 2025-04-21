@@ -1,7 +1,15 @@
 import React, { useState, forwardRef } from 'react';
 import Image from 'next/image';
+import { getProviderLogo, ModelProvider } from '@/utils/ModelProviders';
 
-export function ChatBubble({ role, content, isLoading }: { role: string, content: string, isLoading?: boolean }) {
+export function ChatBubble({ role, content, isLoading, provider }: { 
+    role: string, 
+    content: string, 
+    isLoading?: boolean,
+    provider: string  // Make provider required
+}) {
+    // Get the correct logo based on the provider
+    const logoSrc = role === 'user' ? '' : getProviderLogo(provider as ModelProvider);
     return (
         <div className={`${role === 'user' ? 'col-start-1 col-end-9' : 'col-start-5 col-end-13'} p-3 rounded-lg`}>
             <div className={`flex ${role === 'user' ? 'flex-row' : 'flex-row-reverse'} items-start`}>
@@ -10,11 +18,11 @@ export function ChatBubble({ role, content, isLoading }: { role: string, content
                         role.charAt(0).toUpperCase()
                     ) : (
                         <Image
-                            src="/openai-logomark.svg"
-                            alt="OpenAI Logo"
+                            src={logoSrc} // Render provider-specific logo
+                            alt={`${provider} Logo`}
                             width={20}
                             height={20}
-                            className="invert"
+                            // className="invert"
                         />
                     )}
                 </div>
@@ -34,16 +42,30 @@ export function ChatBubble({ role, content, isLoading }: { role: string, content
     );
 }
 
-export function ChatMessages({ messages, isLoading }: { messages: any[], isLoading: boolean }) {
+export function ChatMessages({ 
+    messages, 
+    isLoading,
+    currentProvider
+}: { 
+    messages: any[], 
+    isLoading: boolean,
+    currentProvider: string
+}) {
     return (
         <div className="grid grid-cols-12 gap-y-2 px-2">
             {messages.map((message, index) =>
-                <ChatBubble key={index} role={message.role} content={message.content.map((block: any) => block.text).join('\n')} />
+                <ChatBubble 
+                    key={index} 
+                    role={message.role} 
+                    provider={message.provider || currentProvider} 
+                    content={message.content.map((block: any) => block.text).join('\n')} 
+                />
             )}
-            {isLoading && <ChatBubble role="bot" content="" isLoading={true} />}
+            {isLoading && <ChatBubble role="bot" content="" isLoading={true} provider={currentProvider} />}
         </div>
     );
 }
+
 
 interface ChatInputProps {
     onSendMessage: (message: string) => void;
@@ -51,7 +73,7 @@ interface ChatInputProps {
     className?: string;
 }
 
-export const ChatInput = forwardRef<HTMLInputElement, ChatInputProps>(({ onSendMessage }, ref) => {
+export const ChatInput = forwardRef<HTMLInputElement, ChatInputProps>(({ onSendMessage, className }, ref) => {
     const [input, setInput] = useState('');
 
     const handleSendMessage = () => {
@@ -63,7 +85,7 @@ export const ChatInput = forwardRef<HTMLInputElement, ChatInputProps>(({ onSendM
     }
 
     return (
-        <div className="flex items-center gap-3 p-4 border-t border-gray-200 bg-white rounded-b-lg">
+        <div className={`flex items-center gap-3 p-4 border-t border-gray-200 bg-white rounded-b-lg ${className}`}>
             <input
                 ref={ref}
                 type="text"
