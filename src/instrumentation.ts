@@ -1,4 +1,4 @@
-import { setupMonocle } from 'testdevksh';
+import { setupMonocle } from 'monocle2ai';
 
 export async function register() {
     console.log("Registering instrumentation...");
