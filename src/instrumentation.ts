@@ -7,7 +7,7 @@ export async function register() {
     console.log("import.meta.url: " + import.meta.url);
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
-        module_private_1.register('import-in-the-middle/hook.mjs',"/vercel/path0/node_modules")
+        module_private_1.register('import-in-the-middle/hook.mjs',"file:///vercel/path0/node_modules")
         console.log("registered import-in-the-middle/hook.mjs");
         setupMonocle("vercelai.app");
     }
