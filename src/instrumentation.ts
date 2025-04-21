@@ -2,12 +2,13 @@ import { setupMonocle } from 'monocle2ai';
 import * as module_private_1 from 'module'
 import * as fs from 'fs';
 // @ts-ignore
-import *  as _ from 'import-in-the-middle/hook.mjs';
+import *  as DummyHook from 'import-in-the-middle/hook.mjs';
 
 export async function register() {
     // console.log("hook: " + Hook);
     console.log("Registering instrumentation... NEXT_RUNTIME: " + process.env.NEXT_RUNTIME);
     console.log("import.meta.url: " + import.meta.url);
+    console.log("import-in-the-middle/hook.mjs: " + DummyHook);
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
         // read a directory and list all the folders
