@@ -8,7 +8,7 @@ export async function register() {
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
         // @ts-ignore
-        // import('import-in-the-middle/hook.mjs')
+        import('import-in-the-middle/hook.mjs')
 
         // read a directory and list all the folders
         for(const dir of ["/var/task/node_modules", "/var/task/", "/var/task/node_modules/import-in-the-middle"]) {
