@@ -12,7 +12,7 @@ export async function register() {
     // this registers monocle instrumentation
     if (process.env.NEXT_RUNTIME === "nodejs") {
         // read a directory and list all the folders
-        for(const dir of ["/var/task/node_modules", "/var/task/", "/var/task/node_modules/import-in-the-middle/lib"]) {
+        for(const dir of ["/var/task/node_modules", "/var/task/", "/var/task/node_modules/import-in-the-middle"]) {
             // const dir = '/var/task/node_modules';
             console.log(`Reading directory: ${dir}`);
             const files = fs.readdirSync(dir);
@@ -29,6 +29,6 @@ export async function register() {
         
         module_private_1.register('import-in-the-middle/hook.mjs',"file:///var/task/node_modules")
         console.log("registered import-in-the-middle/hook.mjs");
-        setupMonocle("vercelai.app");
+        // setupMonocle("vercelai.app");
     }
 }
